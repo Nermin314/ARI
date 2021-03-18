@@ -10,7 +10,7 @@ const rl = require('readline').createInterface({
 
 ari.connect('http://localhost:8088', 'asterisk', 'asterisk', clientLoaded);
 
-class ConfereceCall{
+class ConferenceCalls{
 
     constructor(extensions,conferenceNumber,bridgeID){
         this.extenList=extensions;
@@ -30,24 +30,8 @@ class ConfereceCall{
             console.log("There is no conference room");
     }
 }
-
-class ConferenceCalls {
-    constructor() {
-        this.calls=[];
-    }
-
-}
-
-
 let calls=[];
-//----------get input
-//----------createchannels
-//----------dial
-//----------insert in bridge
-//----------track call in map_of_calls 
-//----------loop
-//----------on Stasisend Destroy bridge if there is just 1 in conf?
-//----------
+
 
 // handler for client being loaded
 function clientLoaded(err, client) {
@@ -60,9 +44,9 @@ function clientLoaded(err, client) {
       output: process.stdout,
       terminal: false
     });
-rl.setPrompt('>>>');
+rl.setPrompt('>');
 rl.prompt();
--
+
 rl.on('line', function(line) {
 
   let dial=/(^(dial)(\s[0-9]+)+$)/;
@@ -71,7 +55,7 @@ rl.on('line', function(line) {
   //  console.log(line.trim().match(dial));
     if(line.trim().match(enterConf)){
         //enter some conference with "enter conf1"
-        calls.print();
+        //calls.print();
         console.log('entering conference');
     }
 
@@ -84,9 +68,12 @@ rl.on('line', function(line) {
     else if(line.trim()==='listCalls'){
     console.log('ListCalls');
     calls.print();
-  } else
-    console.log('Usage: \n 1) dial endpoint1 endpoint2 endpoint3 etc \n 2) listCalls \n 3) enter ConferenceNumber');
-}).on('close', function() {
+  } else {
+        console.log('Usage: \n 1) dial endpoint1 endpoint2 endpoint3 etc \n 2) listCalls \n 3) enter ConferenceNumber');
+    }
+    rl.setPrompt('>');
+    rl.prompt();
+    }).on('close', function() {
   console.log('Have a great day!');
   process.exit(0);
 });
