@@ -105,39 +105,24 @@ rl.on('line', function(line) {
       calls.push(new ConferenceCalls(extensions,"conf1",bridge.id));
 
       //Creating and adding all channels to bridge
-
-    client.channels.create({
-      app: 'dial-test',
-      endpoint: 'PJSIP/' + extensions[0]
-  }, (err, channelOrig) => {
-      if (err) {
-          throw err;
-      } else {
-      console.log("Created Channel %s",channelOrig.name);
-      console.log("Adding Channel %s to bridge %s",channelOrig.name,bridge.id);
-      bridge.addChannel({channel:channelOrig.id},function(err) {
-        if (err) {
-          throw err;
-        }
-      });
+      for(var endpoint of extensions){
           client.channels.create({
               app: 'dial-test',
-              endpoint: 'PJSIP/' + extensions[1]
-          }, (err, channelDestin) => {
-            console.log("Created Channel %s",channelDestin.name);
-            console.log("Adding Channel %s to bridge %s",channelDestin.name,bridge.id);
-            bridge.addChannel({channel:channelDestin.id},function(err) {
+              endpoint: 'PJSIP/' + endpoint
+          }, (err, channel) => {
               if (err) {
-                throw err;
+                  throw err;
               }
-            });
-              calls=new listCalls(extensions,'conf1',bridge.id);
-              calls.print();
-              client.channels.dial({channelId:channelOrig.id});
-              client.channels.dial({channelId:channelDestin.id});
+              console.log("Created Channel %s",channel.name);
+              console.log("Adding Channel %s to bridge %s",channel.name,bridge.id);
+              bridge.addChannel({channel:channel.id},function(err) {
+                  if (err) {
+                      throw err;
+                  }
+              });
+              client.channels.dial({channelId:channel.id});
           });
       }
-  });
 
   }
 
