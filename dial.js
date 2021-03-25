@@ -152,7 +152,6 @@ rl.on('line', function(line) {
             if(call.extenList.includes(extension)){
                 call.popExten(extension);
                 if(!call.extenList.length){
-                    console.log("prazno");
                     client.bridges.destroy(
                         {bridgeId: call.bridgeID},
                         function (err) {}
@@ -164,6 +163,7 @@ rl.on('line', function(line) {
         }
         console.log(util.format('Channel %s has left the application', channel.name));
     }
+
     client.on('StasisStart', stasisStart);
     client.on('StasisEnd', stasisEnd);
     client.start('dial-test');
